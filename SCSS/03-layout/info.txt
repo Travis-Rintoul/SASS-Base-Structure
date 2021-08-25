@@ -1,0 +1,5 @@
+03-layout : Usually we have same styles for header and footer on all the pages of our website.
+In this case, it will be much better to isolate the CSS code for such elements in different file.
+If you are working on a large and complex web design, then you might find some sections on different pages that are either has same text and layout or some might just have the same layout for that section.
+In such case, I create SCSS file for that section in this folder.
+This way, I can find all of my code that is related to layout sections for my website.

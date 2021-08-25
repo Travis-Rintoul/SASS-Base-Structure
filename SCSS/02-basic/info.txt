@@ -1,0 +1,6 @@
+02-basic : This is the folder where the CSS code will start which will style your website.
+As the name describes, this folder holds all the basic CSS code for the website.
+It includes basic styles to tags like section, article , text related tags, grid system, etc.
+I like to separate the code in their individual files.
+For example, I create typography.scss file which holds all basic styles related to all text elements.
+I also create links.scss file if I have several different basic styles for the links on my website.

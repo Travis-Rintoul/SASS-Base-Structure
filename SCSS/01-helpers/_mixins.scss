@@ -1,0 +1,146 @@
+$break-points: (
+    'mobile-s': ('min': 0px, 'max': 320px),
+    'mobile-m': ('min': 320px, 'max': 375px),
+    'mobile-l': ('min': 375px, 'max': 425px),
+    'tablet': ('min': 425px, 'max': 768px),
+    'laptop': ('min': 768px, 'max': 1024px),
+    'laptop-l': ('min': 1024px, 'max': 1440px),
+    'desktop': ('min': 1440px, 'max': 1920px),
+    'desktop-m': ('min': 1920px, 'max': 2560px),
+    'desktop-l': ('min': 2560px, 'max': 2560px),
+    'desktop-4k': ('min': 2560px, 'max': 3840)
+);
+
+/*
+    Cleaner way of implemnting Media Queries
+    @inclide BreakPoint('mobile-s') || @inclide BreakPoint(('mobile-s', 'mobile-m')) ||  @inclide BreakPoint(['mobile-s', 'mobile-m'])
+*/
+@mixin BreakPoint($breakpoints, $isScreen: false)
+{
+    @each $point in $breakpoints
+    {
+        $breakpoint: map-get($break-points, $point);
+
+        @if ($isScreen)
+        {
+            @media screen and (min-width: map-get($breakpoint, "min")) and (max-width: map-get($breakpoint, "max"))
+            {
+                @content;
+            }
+        }
+        @else
+        {
+            @media (min-width: map-get($breakpoint, "min")) and (max-width: map-get($breakpoint, "max"))
+            {
+                @content;
+            }
+        }
+    }
+}
+
+// Shorthand of @include BreakPoint()
+@mixin bp($breakpoints, $isScreen: false)
+{
+    @include BreakPoint($breakpoints, $isScreen)
+    {
+        @content;
+    }
+}
+
+// Clean way of adding a custom media query
+@mixin custom-breakpoint($min, $max)
+{
+    @media (min-width: $min) and (max-width: $max)
+    {
+        @content;
+    }
+}
+
+/*
+    Test Mixin
+*/
+@mixin Rainbow()
+{
+    @each $name, $value in $break-points
+    {
+        @include bp($name)
+        {
+            body
+            {
+                background-color: RandomColor();
+            }
+        }
+    }
+}
+
+@mixin transition($what: all, $time: 0.2s, $how: ease-in-out)
+{
+    -webkit-transition: $what $time $how;
+    -moz-transition:    $what $time $how;
+    -ms-transition:     $what $time $how;
+    -o-transition:      $what $time $how;
+    transition:         $what $time $how;
+}
+
+@mixin prefixer($property, $value, $prefixes: ())
+{
+  @each $prefix in $prefixes
+  {
+    #{"-" + $prefix + "-" + $property}: $value;
+  }
+
+  #{$property}: $value;
+}
+
+@mixin rem($property, $values...)
+{
+    $n: length($values);
+    $i: 1;
+
+    $pxlist: ();
+    $remlist: ();
+
+    @while $i <= $n
+    {
+        $itemVal: (nth($values, $i));
+
+        @if $itemVal != "auto"
+        {
+            $pxlist: append($pxlist, $itemVal + px);
+            $remlist: append($remlist, ($itemVal / 10) + rem);
+        }
+        @else
+        {
+            $pxlist: append($pxlist, auto);
+            $remlist: append($remlist, auto);
+        }
+
+        $i: $i + 1;
+    }
+
+    #{$property}: $pxlist;
+    #{$property}: $remlist;
+}
+
+@mixin border-radius($size)
+{
+    -webkit-border-radius: $size + px;
+    -moz-border-radius: $size + px;
+    border-radius: $size + px;
+}
+
+@mixin opacity($opacity)
+{
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+@mixin placeholder
+{
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+}

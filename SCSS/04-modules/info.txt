@@ -1,0 +1,5 @@
+04-modules : Layouts and modules folder does not have major difference except modules folder includes the small group of elements which get repeated through out the whole website.
+A good example for this folder would be a card which we will be using in different pages of the website.
+I usually create files for buttons, cards, carousal, gallery, etc. in this folder.
+Although I only add code for those modules which have been used at least two times on the website.
+If there is an element that is been used on only one page, than I would rather go with 05-pages folder as that folder contains code specific for that page.

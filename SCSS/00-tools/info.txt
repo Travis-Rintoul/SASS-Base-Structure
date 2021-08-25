@@ -1,0 +1,5 @@
+This directory is the home for all SCSS tools or any third party CSS files you use in your project.
+Many developers uses (or used to) bourbon which adds several useful functions to your development environment.
+You should add such tools in this folder.
+This place is also a home for those css files that you downloaded for any third party libraries you are using in the project.
+I like to put reset.css file in this folder, this way it gets imported at very first in the app.scss and I can easily override the styles in other files.

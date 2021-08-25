@@ -1,0 +1,8 @@
+01-helpers : It is pretty common to use separate files for your SCSS variables, functions and mixins.
+This directory is the place for those files.
+This is really helpful as you can find all of your SCSS related variables and functions in one place.
+You can make change in this folder which will be affected on all of your code.
+This is really helpful when you want to update some SCSS function.
+You do not need to go around your code to find the functions.
+I usually have three files in this folder: variables.scss, mixins.scss and functions.scss.
+I do not use functions and mixins heavily in my projects so you might not find those files in my projects but this folder will be really helpful while you are working on large project.

@@ -1,0 +1,4 @@
+05-pages : This is the place where we either override the CSS code written before for specific pages or we might add new code for that page only.
+If I need only one file for a page, then I create file with the page’s name at the root level of this directory.
+Sometimes few pages requires more than one files and in that case, I create folder with page’s name in the folder and add files inside that folder.
+This way we can easily identify the code for that page.
