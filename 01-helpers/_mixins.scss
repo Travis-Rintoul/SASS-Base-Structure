@@ -1,25 +1,10 @@
-/*
-$break-points: (
-    'isHandheld': ('min': 0px, 'max': 768px),
-    'isMobile':  ('min': 0px, 'max': 425px),
-        'mobile-s': ('min': 0px, 'max': 425px),
-        'mobile-m': ('min': 0px, 'max': 425px),
-        'mobile-l': ('min': 0px, 'max': 425px),
-    'isTablet': ('min': 425px, 'max': 768px),
-    'isDesktop': ('min': 1024px),
-        'desktop-s': ('min': 1440px, 'max': 1920px),
-        'desktop-m': ('min': 1920px, 'max': 2500px),
-        'desktop-l': ('min': 2500px)
-);
-*/
-
 $break-points: (
     'isDesktop': ('min': 1024px, 'orientation': landscape),
     'isDesktopPortrait': ('min': 720px, 'orientation': portrait),
     'isTabletPortrait': ('min': 768px, 'max': 1024px, 'orientation': portrait),
     'isTabletLandscape': ('min': 768px, 'max': 1366px, 'orientation': landscape),
     'isMobilePortrait': ('max': 480px, 'orientation': portrait),
-    'isMobileLandscape': ('max': 640px, 'orientation': landscape),
+    'isMobileLandscape': ('max': 812px, 'orientation': landscape),
 );
 
 /*
@@ -155,9 +140,16 @@ $break-points: (
             @content;
         }
     }
-    @else
+    @else if ($orientation == portrait)
     {
         @include bp(('isDesktopPortrait'))
+        {
+            @content;
+        }
+    }
+    @else if ($orientation == both)
+    {
+        @include bp(('isDesktop', 'isDesktopPortrait'))
         {
             @content;
         }
