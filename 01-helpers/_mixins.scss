@@ -1,3 +1,4 @@
+/*
 $break-points: (
     'isHandheld': ('min': 0px, 'max': 768px),
     'isMobile':  ('min': 0px, 'max': 425px),
@@ -10,12 +11,109 @@ $break-points: (
         'desktop-m': ('min': 1920px, 'max': 2500px),
         'desktop-l': ('min': 2500px)
 );
+*/
+
+$break-points: (
+    'isDesktop': ('min': 1024px, 'orientation': landscape),
+    'isDesktopPortrait': ('min': 720px, 'orientation': portrait),
+    'isTabletPortrait': ('min': 768px, 'max': 1024px, 'orientation': portrait),
+    'isTabletLandscape': ('min': 768px, 'max': 1366px, 'orientation': landscape),
+    'isMobilePortrait': ('max': 480px, 'orientation': portrait),
+    'isMobileLandscape': ('max': 640px, 'orientation': landscape),
+);
 
 /*
     Cleaner way of implemnting Media Queries
     @inclide BreakPoint('mobile-s') || @inclide BreakPoint(('mobile-s', 'mobile-m')) ||  @inclide BreakPoint(['mobile-s', 'mobile-m'])
 */
-@mixin BreakPoint($breakpoints, $isScreen: false)
+
+
+@mixin media($min, $max, $orientation: landscape, $mediatype: screen, $resolutionMin: null, $resolutionMax: null)
+{
+    @if ($resolutionMin == null && $resolutionMax == null)
+    {
+        @if ($min != null and $max != null)
+        {
+            @media screen and (min-width: $min) and (max-width: $max) and (orientation: $orientation)
+            {
+                @content;
+            }
+        }
+        @else if ($min != null and $max == null)
+        {
+            @media screen and (min-width: $min) and (orientation: $orientation)
+            {
+                @content;
+            }
+        }
+        @else if ($min == null and $max != null)
+        {
+            @media screen and (max-width: $max) and (orientation: $orientation)
+            {
+                @content;
+            }
+        }
+    }
+    @else
+    {
+        @if ($min != null and $max != null)
+        {
+            @media screen and (min-width: $min) and (max-width: $max) and (orientation: $orientation) and (min-resolution: $resolutionMin) and (max-resolution: $resolutionMax)
+            {
+                @content;
+            }
+        }
+        @else if ($min != null and $max == null)
+        {
+            @media screen and (min-width: $min) and (orientation: $orientation) and (min-resolution: $resolutionMin) and (max-resolution: $resolutionMax)
+            {
+                @content;
+            }
+        }
+        @else if ($min == null and $max != null)
+        {
+            @media screen and (max-width: $max) and (orientation: $orientation) and (min-resolution: $resolutionMin) and (max-resolution: $resolutionMax)
+            {
+                @content;
+            }
+        }
+    }
+}
+
+@mixin Resolution($resolution, $min: null, $max: null)
+{
+    @media (resolution: #{$resolution}dppx)
+    {
+        @content;
+    }
+}
+
+@mixin ResolutionMM($min, $max)
+{
+    @if ($min != null and $max != null)
+    {
+        @media (min-resolution: #{$min}dppx) and (max-resolution: #{$max}dppx)
+        {
+            @content;
+        }
+    }
+    @else if ($min != null and $max == null)
+    {
+        @media (min-resolution: #{$min}dppx)
+        {
+            @content;
+        }
+    }
+    @else if ($min == null and $max != null)
+    {
+        @media (max-resolution: #{$max}dppx)
+        {
+            @content;
+        }
+    }
+}
+
+@mixin BreakPoint($breakpoints)
 {
     @each $point in $breakpoints
     {
@@ -29,40 +127,76 @@ $break-points: (
         {
             $min: map-get($breakpoint, "min");
             $max: map-get($breakpoint, "max");
+            $ori: map-get($breakpoint, "orientation");
 
-            @if ($isScreen)
+            @include media($min, $max, $ori)
             {
-                @media screen and (min-width: $min) and (max-width: $max)
-                {
-                    @content;
-                }
-            }
-            @else
-            {
-                @if ($min != null && $max == null)
-                {
-                    @media (min-width: $min)
-                    {
-                        @content;
-                    }
-                }
-                @else
-                {
-                    @media (min-width: $min) and (max-width: $max)
-                    {
-                        @content;
-                    }
-                }
+                @content;
             }
         }
     }
 }
+
 // Shorthand of @include BreakPoint()
-@mixin bp($breakpoints, $isScreen: false)
+@mixin bp($breakpoints)
 {
-    @include BreakPoint($breakpoints, $isScreen)
+    @include BreakPoint($breakpoints)
     {
         @content;
+    }
+}
+
+@mixin isDesktop($orientation: landscape)
+{
+    @if ($orientation == landscape)
+    {
+        @include bp(('isDesktop'))
+        {
+            @content;
+        }
+    }
+    @else
+    {
+        @include bp(('isDesktopPortrait'))
+        {
+            @content;
+        }
+    }
+}
+
+@mixin isTablet($orientation: landscape)
+{
+    @if ($orientation == landscape)
+    {
+        @include bp(('isTabletLandscape'))
+        {
+            @content;
+        }
+    }
+    @else
+    {
+        @include bp(('isTabletPortrait'))
+        {
+            @content;
+        }
+    }
+}
+
+@mixin isMobile($orientation: landscape)
+{
+    @if ($orientation == landscape)
+    {
+        @include bp(('isMobileLandscape'))
+        {
+            @content;
+        }
+    }
+    @else
+    {
+        @include bp(('isMobilePortrait'))
+        {
+            @content;
+        }
     }
 }
 
